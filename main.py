@@ -1,6 +1,8 @@
 import os
 from discord.ext import commands
 from keep_alive import keep_alive
+from datetime import datetime
+import pytz
 
 client = commands.Bot(command_prefix='.')
 
@@ -8,6 +10,7 @@ client = commands.Bot(command_prefix='.')
 async def on_ready():
     print('bot is ready')
 
+#list of active players
 player = {
     "ace": 10,
     "spirit": 20,
@@ -23,7 +26,7 @@ player = {
     "null": 0,
 }
 
-
+#class for 4 v 4
 class team4:
     def __init__(self, player1, player2, player3, player4):
         self.player1 = player1
@@ -31,7 +34,7 @@ class team4:
         self.player3 = player3
         self.player4 = player4
 
-
+#class for 5 v 5
 class team5:
     def __init__(self, player1, player2, player3, player4, player5):
         self.player1 = player1
@@ -40,6 +43,7 @@ class team5:
         self.player4 = player4
         self.player5 = player5
 
+#class for 6 v 6
 class team6:
     def __init__(self, player1, player2, player3, player4, player5, player6):
         self.player1 = player1
@@ -49,6 +53,7 @@ class team6:
         self.player5 = player5
         self.player6 = player6
 
+#class for 7 v 7
 class team7:
     def __init__(self, player1, player2, player3, player4, player5, player6,
                  player7):
@@ -60,16 +65,17 @@ class team7:
         self.player6 = player6
         self.player7 = player7
 
+#displays all players
 @client.command(help="Displays a list of players")
 async def players(ctx):
-
-  for k in player:
-    result = (k, player[k])
+  for k, v in player.items():
+    result = (k, v)
     await ctx.send(result)
+    await ctx.send("Null is reserved for players not listed")
 
 
 
-
+#compares two teams
 @client.command(help="Compares two teams with pre-defined values")
 async def team_compare(ctx, pc, p1, p2, p3, p4, p5, p6, p7, p8, *arg: str):
     pc = int(pc)
@@ -144,6 +150,16 @@ async def team_compare(ctx, pc, p1, p2, p3, p4, p5, p6, p7, p8, *arg: str):
         print("Push - Team 1: {} vs Team2: {}".format(team1_score,
                                                       team2_score))
         await ctx.send("Push")
+
+#displays time and game time
+@client.command(help="Displays current time and game time")
+async def time(ctx):
+    
+    tz_NY = pytz.timezone('America/New_York') 
+    datetime_NY = datetime.now(tz_NY)
+    cur_time = ("The Current time is:", datetime_NY.strftime("%H:%M:%S"))
+    await ctx.send(cur_time)
+    await ctx.send("Game time is at 21:30:00 EASTERN TIMEZONE")
 
 
 keep_alive()
