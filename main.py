@@ -1,15 +1,6 @@
 import os
-import pytz
-import asyncio
-import discord
-import time
-import schedule
-import random
-
-from discord.ext import tasks, commands
-from keep_alive import keep_alive
 from discord.ext import commands
-from datetime import datetime
+from keep_alive import keep_alive
 
 client = commands.Bot(command_prefix='.')
 
@@ -34,23 +25,6 @@ async def on_message_delete(message):
     channel = message.channel
     await channel.send('{}: {}'.format(author, content))
     await client.process_commands(message)
-
-
-# non-discord way
-# @client.event
-# async def on_message(message):
-#   channel = message.channel
-#   if message.content.startswith('.ping'):
-#     await channel.send('pong!')
-#   if message.content.startswith(".echo"):
-#     content = message.content[6:]
-#     await channel.send(content)
-
-
-@client.command()
-async def ping(ctx):
-    await ctx.send('Pong!')
-
 
 @client.command()
 async def echo(ctx, *args):
@@ -217,15 +191,6 @@ async def team_compare(ctx, pc, p1, p2, p3, p4, p5, p6, p7, p8, *arg: str):
                                                       team2_score))
         await ctx.send("Push")
 
-
-#doesn't work update syntax
-# @client.command(pass_context=True)
-# async def clear(ctx, msg, amt=100):
-#   messages=[]
-#   async for i in client.logs_from(msg.message.channel,limit=amt):
-#       messages.append(i)
-#   await client.delete_messages(messages)
-#   await ctx.send('DELETED MESSAGES')
 
 keep_alive()
 token = os.environ.get("DISCORD_BOT_SECRET")
