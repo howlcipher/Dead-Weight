@@ -4,36 +4,9 @@ from keep_alive import keep_alive
 
 client = commands.Bot(command_prefix='.')
 
-
 @client.event
 async def on_ready():
     print('bot is ready')
-
-
-@client.event
-async def on_message(message):
-    author = message.author
-    content = message.content
-    print('{}: {}'.format(author, content))
-    await client.process_commands(message)
-
-
-@client.event
-async def on_message_delete(message):
-    author = message.author
-    content = message.content
-    channel = message.channel
-    await channel.send('{}: {}'.format(author, content))
-    await client.process_commands(message)
-
-@client.command()
-async def echo(ctx, *args):
-    output = ''
-    for word in args:
-        output += word
-        output += " "
-    await ctx.send(output)
-
 
 player = {
     "ace": 10,
@@ -67,7 +40,6 @@ class team5:
         self.player4 = player4
         self.player5 = player5
 
-
 class team6:
     def __init__(self, player1, player2, player3, player4, player5, player6):
         self.player1 = player1
@@ -76,7 +48,6 @@ class team6:
         self.player4 = player4
         self.player5 = player5
         self.player6 = player6
-
 
 class team7:
     def __init__(self, player1, player2, player3, player4, player5, player6,
@@ -89,34 +60,17 @@ class team7:
         self.player6 = player6
         self.player7 = player7
 
+@client.command(help="Displays a list of players")
+async def players(ctx):
 
-@client.command()
-async def team1(ctx, m1, m2, m3, m4):
-    m1 = player[m1]
-    m2 = player[m2]
-    m3 = player[m3]
-    m4 = player[m4]
-
-    result = m1 + m2 + m3 + m4
-    print(result)
-    await ctx.send("Team 1 Score: " + result)
-    return (result)
+  for k in player:
+    result = (k, player[k])
+    await ctx.send(result)
 
 
-@client.command()
-async def team2(ctx, m1, m2, m3, m4):
-    m1 = player[m1]
-    m2 = player[m2]
-    m3 = player[m3]
-    m4 = player[m4]
-
-    result = m1 + m2 + m3 + m4
-    print(result)
-    await ctx.send("Team 2 Score:" + result)
-    return (result)
 
 
-@client.command()
+@client.command(help="Compares two teams with pre-defined values")
 async def team_compare(ctx, pc, p1, p2, p3, p4, p5, p6, p7, p8, *arg: str):
     pc = int(pc)
     if pc == 4:

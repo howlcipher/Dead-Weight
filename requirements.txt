@@ -3,4 +3,3 @@ flask
 python-dotenv
 time
 pytz
-schedule
